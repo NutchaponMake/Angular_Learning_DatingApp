@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClientModule} from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 ///ใช้สำหรับ เพิ่ม module ต่างๆ จาก library แต่ละที่เข้าสู่การสร้างหน้าเว็บเพจโดยใช้ angular
@@ -14,7 +16,8 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
