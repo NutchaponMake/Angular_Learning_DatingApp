@@ -1,0 +1,48 @@
+<form (ngSubmit)="register()" #registerForm="ngForm" autocomplete="off">
+  <h2 class="text-center text-primary">sign up</h2>
+  <hr />
+
+  <div class="form-floating mb-3">
+    <input
+      id="username"
+      name="username"
+      class="form-control"
+      type="text"
+      placeholder="username.."
+      [(ngModel)]="model.username"
+    />
+    <label for="username">Username</label>
+  </div>
+
+  <div class="form-floating mb-3">
+    <input
+      id="password"
+      name="password"
+      class="form-control"
+      type="password"
+      placeholder="password.."
+      [(ngModel)]="model.password"
+    />
+    <label for="password">Password</label>
+  </div>
+
+  <div class="form-group text-center mb-3">
+    <button class="btn btn-success me-3" type="submit">Register</button>
+    <button (click)="cancel()" class="btn btn-secondary" type="button">
+      Cancel
+    </button>
+  </div>
+
+  <!-- <div class="form-floating">
+    <select id="favUser" class="form-select">
+      <option disabled selected hidden>--select user--</option>
+      <option
+        *ngFor="let user of usersFromHomeComponent"  //<<Use this to recieving value from parent to child via component Import
+        [value]="user.userName"
+      >
+        {{ user.userName }}
+      </option>
+    </select>
+    <label for="favUser">Who is your favourite user?</label>
+  </div> -->
+</form>
