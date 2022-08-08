@@ -8,10 +8,10 @@ namespace API.DTOs
 {
     public class LoginDtoReq
     {
-        [Required]
+        [Required(ErrorMessage = "Please enter UserName")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter Password")]
         public string Password { get; set; }
     }
 
