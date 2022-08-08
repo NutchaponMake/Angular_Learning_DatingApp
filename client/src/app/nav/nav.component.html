@@ -48,10 +48,18 @@
                 <a class="nav-link" (click)="logout()">Logout</a>
               </li>
             </ng-container>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                [routerLink]="['/errors']"
+                routerLinkActive="active"
+                >Errors Test</a
+              >
+            </li>
           </ng-container>
         </ul>
       </div>
-      <ng-container *ngIf="(accountService.currentUser$ | async) as user">
+      <ng-container *ngIf="accountService.currentUser$ | async as user">
         <div class="dropdown" dropdown>
           <a
             class="dropdown-toggle text-light"
@@ -59,7 +67,7 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
             dropdownToggle
-            >Welcome {{user.userName | titlecase}}</a
+            >Welcome {{ user.userName | titlecase }}</a
           >
           <ul class="dropdown-menu mt-3" *dropdownMenu>
             <li><a class="dropdown-item">Edit Profile</a></li>

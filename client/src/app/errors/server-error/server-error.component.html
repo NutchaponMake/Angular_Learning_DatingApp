@@ -1,0 +1,14 @@
+<div class="container mt-5 d-flex flex-column align-items-center">
+  <h1>500-Internal Server Error</h1>
+  <ng-container *ngIf="error">
+    <h4 class="text-danger">Error: {{ error.message }}</h4>
+    <p>Stack trace: {{ error.details }}</p>
+  </ng-container>
+  <button
+    class="btn btn-info-btn-lg mt-3"
+    [routerLink]="['/']"
+    routerLinkActive="active"
+  >
+    Return to homepage
+  </button>
+</div>
