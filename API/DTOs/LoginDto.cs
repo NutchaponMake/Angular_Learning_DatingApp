@@ -15,10 +15,19 @@ namespace API.DTOs
         public string Password { get; set; }
     }
 
-    public class LoginDtoRes
+    // public class LoginDtoRes
+    // {
+    //     public string status { get; set; }
+    //     public string message { get; set; }
+    //     public UserDto data { get; set; }
+    // }
+
+      public class LoginDtoRes
     {
-        public string status { get; set; }
-        public string message { get; set; }
-        public UserDto data { get; set; }
+        [Required(ErrorMessage = "Please enter UserName")]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "Please enter Password")]
+        public string Password { get; set; }
     }
 }
