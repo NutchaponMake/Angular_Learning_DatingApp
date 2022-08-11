@@ -51,7 +51,7 @@ namespace API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDtoReq loginDtoReq)
+        public async Task<ActionResult<LoginDtoRes>> Login(LoginDtoReq loginDtoReq)
         {
             LoginDtoRes res = new LoginDtoRes();
             UserDto userDto = new UserDto();
@@ -69,12 +69,12 @@ namespace API.Controllers
                 if (computeHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid Password");
             }
 
-            // res.status = "success";
-            // res.message = "Login completed";
+            res.status = "success";
+            res.message = "Login completed";
             userDto.UserName = user.UserName;
             userDto.Token = _tokenservice.CreateToken(user);
-            // res.data = userDto;
-            return userDto;
+            res.data = userDto;
+            return res;
 
         }
 

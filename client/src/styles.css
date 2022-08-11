@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+
+.nav-tabs {
+    --bs-nav-tabs-border-width: 3px;
+    --bs-nav-tabs-border-color: #dee2e6;
+    --bs-nav-tabs-border-radius: 0.375rem;
+    --bs-nav-tabs-link-hover-border-color: white white #fbcdcf white;
+    --bs-nav-tabs-link-active-color: #495057;
+    --bs-nav-tabs-link-active-bg: #fff;
+    --bs-nav-tabs-link-active-border-color: white white #E95420 white;
+}
+
+.member-tabset>.tab-content {
+    margin-top: 5px;
+    padding: 15px;
+}
