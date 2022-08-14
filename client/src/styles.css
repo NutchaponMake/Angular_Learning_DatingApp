@@ -14,3 +14,7 @@
     margin-top: 5px;
     padding: 15px;
 }
+
+gallery {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
