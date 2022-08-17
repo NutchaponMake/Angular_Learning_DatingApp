@@ -17,8 +17,10 @@ namespace API.Controllers
     {
         private readonly DataContext _context;
         private readonly ITokenService _tokenservice;
-        public AccountController(DataContext context, ITokenService tokenservice)
+        private readonly IUserRepository _userRepository;
+        public AccountController(DataContext context, ITokenService tokenservice, IUserRepository userRepository)
         {
+            _userRepository = userRepository;
             _tokenservice = tokenservice;
             _context = context;
         }
@@ -55,10 +57,14 @@ namespace API.Controllers
         {
             LoginDtoRes res = new LoginDtoRes();
             UserDto userDto = new UserDto();
-            //// หา username ใน DB ถ้าไม่เจอให้ส่ง Unauthorized กลับไป
-            var user = await _context.Users
-                .SingleOrDefaultAsync(x => x.UserName == loginDtoReq.UserName);
+
+            var user = await _userRepository.GetUsersByUsernameAsync(loginDtoReq.UserName);
             if (user == null) return Unauthorized("Invalid Username.");
+
+            //// หา username ใน DB ถ้าไม่เจอให้ส่ง Unauthorized กลับไป
+            // var user = await _context.Users
+            //     .SingleOrDefaultAsync(x => x.UserName == loginDtoReq.UserName);
+            // if (user == null) return Unauthorized("Invalid Username.");
 
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -73,6 +79,7 @@ namespace API.Controllers
             res.message = "Login completed";
             userDto.UserName = user.UserName;
             userDto.Token = _tokenservice.CreateToken(user);
+            userDto.PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url;
             res.data = userDto;
             return res;
 

@@ -21,21 +21,11 @@ export class AccountService {
         map((res: LoginRes) => {
           const user = res.data
           if (user) {
-            localStorage.setItem('user', JSON.stringify(user));
-            this.currentUserSource.next(user);
+            this.setCurrentUser(user);
           }
           return res;
         })
       );
-  }
-
-  setCurrentUser(user: User) {
-    this.currentUserSource.next(user);
-  }
-
-  logout() {
-    localStorage.removeItem('user');
-    this.currentUserSource.next(null);
   }
 
   register(model: any) {
@@ -44,12 +34,20 @@ export class AccountService {
         map((res: RegisterRes) => {
           const user = res.data
           if (user) {
-            localStorage.setItem('user', JSON.stringify(user));
-            this.currentUserSource.next(user);
+            this.setCurrentUser(user);
           }
           return res;
         })
       );
   }
 
+  setCurrentUser(user: User) {
+    localStorage.setItem('user', JSON.stringify(user));
+    this.currentUserSource.next(user);
+  }
+
+  logout() {
+    localStorage.removeItem('user');
+    this.currentUserSource.next(null);
+  }
 }

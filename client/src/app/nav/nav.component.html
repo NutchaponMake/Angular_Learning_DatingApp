@@ -60,7 +60,15 @@
         </ul>
       </div>
       <ng-container *ngIf="accountService.currentUser$ | async as user">
-        <div class="dropdown" dropdown>
+        <div
+          class="dropdown d-flex align-items-center justify-content-around"
+          dropdown
+        >
+          <img
+            src="{{ user.photoUrl }}"
+            alt="{{ user.userName }}"
+            class="me-2"
+          />
           <a
             class="dropdown-toggle text-light"
             role="button"
