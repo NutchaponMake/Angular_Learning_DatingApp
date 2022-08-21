@@ -1,0 +1,26 @@
+<div class="input-group mb-3">
+  <div class="form-floating">
+    <input
+      [formControl]="ngControl.control"
+      [ngClass]="{ 'is-invalid': ngControl.invalid && ngControl.touched }"
+      class="form-control"
+      type="text"
+      placeholder="{{ label }}"
+      bsDatepicker
+      [bsConfig]="bsConfig"
+      [maxDate]="maxDate"
+      #dp="bsDatepicker"
+    />
+    <label>{{ label }}</label>
+    <div *ngIf="ngControl.control.errors?.required" class="invalid-tooltip">
+      {{ label }} is required
+    </div>
+  </div>
+  <button
+    class="input-group-text bg-primary toPointer"
+    (click)="dp.toggle()"
+    type="button"
+  >
+    <i class="{{ iconClass }} text-light"></i>
+  </button>
+</div>

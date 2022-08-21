@@ -8,6 +8,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,8 +19,11 @@ namespace API.Controllers
         private readonly DataContext _context;
         private readonly ITokenService _tokenservice;
         private readonly IUserRepository _userRepository;
-        public AccountController(DataContext context, ITokenService tokenservice, IUserRepository userRepository)
+        private readonly IMapper _mapper;
+        public AccountController(DataContext context, ITokenService tokenservice
+        , IUserRepository userRepository, IMapper mapper)
         {
+            _mapper = mapper;
             _userRepository = userRepository;
             _tokenservice = tokenservice;
             _context = context;
@@ -34,20 +38,21 @@ namespace API.Controllers
             ////เช็ค username ว่ามีในระบบแล้วหรือยัง ถ้ามีแล้ว return BadRequest (เป็น http response อย่างนึง) กลับไปหา user
             if (await UserExists(registerDtoReq.UserName)) return BadRequest("Username has been taken.");
 
+            var user = _mapper.Map<AppUser>(registerDtoReq);
             using var hmac = new HMACSHA512();
 
-            var user = new AppUser
-            {
-                UserName = registerDtoReq.UserName.ToLower(),
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDtoReq.Password)),
-                PasswordSalt = hmac.Key
-            };
+            user.UserName = registerDtoReq.UserName.ToLower();
+            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDtoReq.Password));
+            user.PasswordSalt = hmac.Key;
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
+
             res.status = "success";
             res.message = "Registeration completed";
             userDto.UserName = user.UserName;
             userDto.Token = _tokenservice.CreateToken(user);
+            userDto.KnownAs = user.KnownAs;
             res.data = userDto;
             return res;
         }
@@ -80,6 +85,7 @@ namespace API.Controllers
             userDto.UserName = user.UserName;
             userDto.Token = _tokenservice.CreateToken(user);
             userDto.PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url;
+            userDto.KnownAs = user.KnownAs;
             res.data = userDto;
             return res;
 

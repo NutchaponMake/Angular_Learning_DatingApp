@@ -1,33 +1,85 @@
-<form (ngSubmit)="register()" #registerForm="ngForm" autocomplete="off">
+<form
+  [formGroup]="registerForm"
+  (ngSubmit)="registerForm.valid && register()"
+  autocomplete="off"
+>
   <h2 class="text-center text-primary">sign up</h2>
-  <hr />
-
-  <div class="form-floating mb-3">
-    <input
-      id="username"
-      name="username"
-      class="form-control"
-      type="text"
-      placeholder="username.."
-      [(ngModel)]="model.username"
-    />
-    <label for="username">Username</label>
+  <hr class="mb-3" />
+  <div class="form-radio d-flex justify-content-around mb-3 px-3">
+    <label>I am :</label>
+    <div class="form-check form-check-inline">
+      <input
+        formControlName="gender"
+        class="form-check-input"
+        type="radio"
+        value="male"
+      />
+      <label class="form-check-label" for="gender">Male</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        formControlName="gender"
+        class="form-check-input"
+        type="radio"
+        value="female"
+      />
+      <label class="form-check-label" for="gender">Female</label>
+    </div>
   </div>
 
-  <div class="form-floating mb-3">
-    <input
-      id="password"
-      name="password"
-      class="form-control"
-      type="password"
-      placeholder="password.."
-      [(ngModel)]="model.password"
-    />
-    <label for="password">Password</label>
-  </div>
+  <app-text-input
+    [formControl]="registerForm.controls['knownAs']"
+    [label]="'Known as'"
+    [iconClass]="'fa fa-pencil'"
+  ></app-text-input>
+
+  <app-date-input
+    [formControl]="registerForm.controls['DOB']"
+    [label]="'Date of birth'"
+    [iconClass]="'fa fa-calendar'"
+    [maxDate]="maxDate"
+  ></app-date-input>
+
+  <app-text-input
+    [formControl]="registerForm.controls['city']"
+    [label]="'City'"
+    [iconClass]="'fa fa-building'"
+  ></app-text-input>
+
+  <app-text-input
+    [formControl]="registerForm.controls['country']"
+    [label]="'Country'"
+    [iconClass]="'fa fa-globe'"
+  ></app-text-input>
+
+  <app-text-input
+    [formControl]="registerForm.controls['username']"
+    [label]="'Username'"
+    [iconClass]="'fa fa-user'"
+  ></app-text-input>
+
+  <app-text-input
+    [formControl]="registerForm.controls['password']"
+    [label]="'Password'"
+    [type]="'password'"
+    [iconClass]="'fa fa-eye'"
+  ></app-text-input>
+
+  <app-text-input
+    [formControl]="registerForm.controls['confirmPassword']"
+    [label]="'Confirm password'"
+    [type]="'password'"
+    [iconClass]="'fa fa-eye'"
+  ></app-text-input>
 
   <div class="form-group text-center mb-3">
-    <button class="btn btn-success me-3" type="submit">Register</button>
+    <button
+      [disabled]="!registerForm.valid"
+      class="btn btn-success me-3"
+      type="submit"
+    >
+      Register
+    </button>
     <button (click)="cancel()" class="btn btn-secondary" type="button">
       Cancel
     </button>
@@ -46,3 +98,10 @@
     <label for="favUser">Who is your favourite user?</label>
   </div> -->
 </form>
+<div class="row mt-5" *ngIf="validationErrors.length > 0">
+  <ul class="text-primary">
+    <li *ngFor="let error of validationErrors">
+      {{ error }}
+    </li>
+  </ul>
+</div>

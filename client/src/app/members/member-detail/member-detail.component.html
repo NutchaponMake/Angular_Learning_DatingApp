@@ -47,7 +47,9 @@
       </tab>
 
       <tab heading="Photos">
-        <gallery [items]="images" thumbPosition="bottom"></gallery>
+        <ng-container *ngIf="images.length > 0">
+          <gallery [items]="images" thumbPosition="bottom"></gallery>
+        </ng-container>
       </tab>
 
       <tab heading="Messages">

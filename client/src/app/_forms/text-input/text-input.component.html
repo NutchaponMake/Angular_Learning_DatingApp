@@ -1,0 +1,47 @@
+<div class="input-group mb-3">
+  <div class="form-floating">
+    <input
+      [formControl]="ngControl.control"
+      [ngClass]="{ 'is-invalid': ngControl.invalid && ngControl.touched }"
+      class="form-control"
+      [type]="type == 'password' ? (showPassword ? 'text' : 'password') : type"
+      [autocomplete]="type == 'password' ? 'new-password' : 'username'"
+      placeholder="{{ label }}"
+    />
+    <label>{{ label }}</label>
+
+    <div *ngIf="ngControl.control.errors?.required" class="invalid-tooltip">
+      Please enter a {{ label }}
+    </div>
+
+    <div *ngIf="ngControl.control.errors?.minlength" class="invalid-tooltip">
+      {{ label }} must be at least
+      {{ ngControl.control.errors.minlength["requiredLength"] }} characters
+    </div>
+
+    <div *ngIf="ngControl.control.errors?.maxlength" class="invalid-tooltip">
+      {{ label }} must be at most
+      {{ ngControl.control.errors.maxlength["requiredLength"] }} characters
+    </div>
+
+    <div *ngIf="ngControl.control.errors?.isMatching" class="invalid-tooltip">
+      Password do not matched.
+    </div>
+  </div>
+
+  <ng-container *ngIf="type == 'password'; else normalIcon">
+    <button
+      class="input-group-text bg-primary toPointer"
+      (click)="toggleShow()" type="button"
+    >
+      <i class="fa fa-eye text-light" [hidden]="showPassword"></i>
+      <i class="fa fa-eye-slash text-light" [hidden]="!showPassword"></i>
+    </button>
+  </ng-container>
+  <!-- if it a password input -->
+  <ng-template #normalIcon>
+    <span class="input-group-text bg-primary">
+      <i class="{{ iconClass }} text-light"></i>
+    </span>
+  </ng-template>
+</div>

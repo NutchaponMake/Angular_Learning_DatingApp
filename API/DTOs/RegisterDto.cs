@@ -8,11 +8,22 @@ namespace API.DTOs
 {
     public class RegisterDtoReq
     {
+        [Required(ErrorMessage = "Please enter Gender.")]
+        public string Gender { get; set; }
+        [Required(ErrorMessage = "Please enter KnownAs.")]
+        public string KnownAs { get; set; }
+        [Required(ErrorMessage = "Please enter DateOfBirth.")]
+        public DateTime DateOfBirth { get; set; }
+        [Required(ErrorMessage = "Please enter City.")]
+        public string City { get; set; }
+        [Required(ErrorMessage = "Please enter Country.")]
+        public string Country { get; set; }
+
         [Required(ErrorMessage = "Please enter UserName.")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Please enter Password.")]
-        [StringLength(8, MinimumLength = 4)]
+        [StringLength(10, MinimumLength = 4)]
         public string Password { get; set; }
     }
 

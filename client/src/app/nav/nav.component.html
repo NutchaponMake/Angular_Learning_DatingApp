@@ -65,7 +65,7 @@
           dropdown
         >
           <img
-            src="{{ user.photoUrl }}"
+            src="{{ user.photoUrl || './assets/user.png' }}"
             alt="{{ user.userName }}"
             class="me-2"
           />
