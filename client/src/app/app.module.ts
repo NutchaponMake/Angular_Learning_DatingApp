@@ -29,6 +29,7 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { DateInputComponent } from './_forms/date-input/date-input.component';
+import { LoginInputComponent } from './_forms/login-input/login-input.component';
 
 ///ใช้สำหรับ เพิ่ม module ต่างๆ จาก library แต่ละที่เข้าสู่การสร้างหน้าเว็บเพจโดยใช้ angular
 @NgModule({
@@ -49,6 +50,7 @@ import { DateInputComponent } from './_forms/date-input/date-input.component';
     PhotoEditorComponent,
     TextInputComponent,
     DateInputComponent,
+    LoginInputComponent,
   ],
   imports: [
     BrowserModule,

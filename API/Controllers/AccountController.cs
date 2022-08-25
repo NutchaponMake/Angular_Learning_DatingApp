@@ -53,6 +53,7 @@ namespace API.Controllers
             userDto.UserName = user.UserName;
             userDto.Token = _tokenservice.CreateToken(user);
             userDto.KnownAs = user.KnownAs;
+            userDto.Gender = user.Gender;
             res.data = userDto;
             return res;
         }
@@ -86,6 +87,7 @@ namespace API.Controllers
             userDto.Token = _tokenservice.CreateToken(user);
             userDto.PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url;
             userDto.KnownAs = user.KnownAs;
+            userDto.Gender = user.Gender;
             res.data = userDto;
             return res;
 

@@ -36,7 +36,7 @@ export class RegisterComponent implements OnInit {
         Validators.maxLength(10), Validators.minLength(4), this.isMatch('password')]],
         gender: ['male', Validators.required],
         knownAs: [null, Validators.required],
-        DOB: [null, Validators.required],
+        dateOfBirth: [null, Validators.required],
         city: [null, Validators.required],
         country: [null, Validators.required],
       });

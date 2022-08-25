@@ -1,0 +1,13 @@
+<div>
+  <input
+    [formControl]="ngControl.control"
+    [ngClass]="{ 'is-invalid': ngControl.invalid && ngControl.touched }"
+    class="form-control"
+    [type]="type"
+    [autocomplete]="type == 'password' ? 'new-password' : 'username'"
+    placeholder="{{ label }}"
+  />
+  <div *ngIf="ngControl.control.errors?.required" class="invalid-tooltip">
+    Please enter a {{ label }}
+  </div>
+</div>

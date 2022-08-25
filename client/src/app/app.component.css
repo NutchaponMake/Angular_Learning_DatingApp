@@ -1,3 +1,5 @@
-:host ::ng-deep .toPointer {
+:host ::ng-deep .toPointer,
+:host ::ng-deep input[type=radio],
+:host ::ng-deep input[type=radio]+label {
     cursor: pointer;
 }

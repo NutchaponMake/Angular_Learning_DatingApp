@@ -75,7 +75,7 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
             dropdownToggle
-            >Welcome {{ user.userName | titlecase }}</a
+            >Welcome {{ user.knownAs | titlecase }}</a
           >
           <ul class="dropdown-menu mt-3" *dropdownMenu>
             <li>
@@ -93,28 +93,24 @@
       </ng-container>
       <ng-container *ngIf="!!!(accountService.currentUser$ | async)">
         <form
-          #loginForm="ngForm"
-          (ngSubmit)="login()"
+          [formGroup]="loginForm"
+          (ngSubmit)="loginForm.valid && login()"
           autocomplete="false"
-          class="d-flex"
-          role="login"
+          class="d-flex align-items-center justify-content-around"
         >
-          <input
-            name="username"
-            [(ngModel)]="model.username"
-            class="form-control me-2"
-            type="text"
-            placeholder="Username"
-            autocomplete="current-password"
-          />
-          <input
-            name="password"
-            [(ngModel)]="model.password"
-            class="form-control me-2"
-            type="password"
-            placeholder="Password"
-            autocomplete="current-password"
-          />
+          <app-login-input
+            [formControl]="loginForm.controls['username']"
+            [label]="'Username'"
+            class="me-2"
+          ></app-login-input>
+
+          <app-login-input
+            [formControl]="loginForm.controls['password']"
+            [label]="'Password'"
+            [type]="'password'"
+            class="me-2"
+          ></app-login-input>
+
           <button class="btn btn-success" type="submit">Login</button>
         </form>
       </ng-container>

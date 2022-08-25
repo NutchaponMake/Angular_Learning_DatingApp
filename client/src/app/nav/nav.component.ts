@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
@@ -13,15 +14,25 @@ import { AccountService } from '../_services/account.service';
 })
 export class NavComponent implements OnInit {
   model: any = {}
+  loginForm: FormGroup;
 
   constructor(public accountService: AccountService, private router: Router
-    , private toastr: ToastrService) { }
+    , private toastr: ToastrService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  initializeForm() {
+    this.loginForm
+      = this.formBuilder.group({
+        username: [null, Validators.required],
+        password: [null, Validators.required],
+      });
   }
 
   login() {
-    this.accountService.login(this.model)
+    this.accountService.login(this.loginForm.value)
       .subscribe({
         next: (response) => {
           console.log(response);

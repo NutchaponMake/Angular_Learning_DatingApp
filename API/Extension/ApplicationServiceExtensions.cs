@@ -29,6 +29,7 @@ namespace API.Extension
             });
 
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<LogUserActivity>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             return services;
