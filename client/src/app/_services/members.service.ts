@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, of, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { LikedParams } from '../_model/likedParams';
 import { Member } from '../_model/member';
 import { PaginatedResult } from '../_model/pagination';
 import { User } from '../_model/user';
@@ -17,6 +18,8 @@ export class MembersService {
   memberCache = new Map();
   user: User;
   userParams: UserParams
+  likedParams: LikedParams;
+  likedMemberCache = new Map();
 
   constructor(private http: HttpClient, private accountService: AccountService) {
     this.accountService.currentUser$.pipe(take(1)).subscribe(
@@ -24,12 +27,13 @@ export class MembersService {
         next: res => {
           this.user = res;
           this.userParams = new UserParams(res);
-        },
-        error: error => { console.log(error.error) }
+          this.likedParams = new LikedParams();
+        }
       }
     )
   }
 
+  //#region Member-list
   getUserParams() {
     return this.userParams;
   }
@@ -65,7 +69,7 @@ export class MembersService {
       .pipe(map(res => {
         this.memberCache.set(Object.values(userParams).join('-'), res);
         return res;
-      }))
+      }));
 
   }
 
@@ -91,7 +95,9 @@ export class MembersService {
 
     return this.http.get<Member>(this.baseUrl + 'users/' + username);
   }
+  //#endregion
 
+  //#region member-config
   updateMember(member: Member) {
     return this.http.put(this.baseUrl + 'users', member).pipe(
       map(() => {
@@ -108,6 +114,44 @@ export class MembersService {
   deletePhoto(photoId: number) {
     return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
   }
+
+  //#endregion
+
+  //#region Liked
+  getLikedParams() {
+    return this.likedParams;
+  }
+
+  setLikedParams(params: LikedParams) {
+    this.likedParams = params;
+  }
+
+  resetLikedParams() {
+    this.likedParams = new LikedParams();
+    return this.likedParams;
+  }
+
+  addLike(username: string) {
+    return this.http.post(this.baseUrl + 'likes/' + username, {});
+  }
+
+  getLikes(likeParams: LikedParams) {
+    var hasCache = this.likedMemberCache.get(Object.values(likeParams).join('-'));
+    if (hasCache) {
+      return of(hasCache);
+    }
+    let params = this.getPaginationHeaders(likeParams.pageNumber, likeParams.pageSize);
+    params = params.append('predicate', likeParams.predicate);
+
+    return this.getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params)
+      .pipe(map(res => {
+        this.likedMemberCache.set(Object.values(likeParams).join('-'), res);
+        return res;
+      }));
+
+    //return this.http.get<Partial<Member[]>>(this.baseUrl + 'likes?predicate=' + predicate);
+  }
+  //#endregion
 
   private getPaginationHeaders(pageNumber: number, pageSize: number) {
     let params = new HttpParams();
