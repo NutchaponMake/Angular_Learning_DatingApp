@@ -8,6 +8,7 @@ import { PaginatedResult } from '../_model/pagination';
 import { User } from '../_model/user';
 import { UserParams } from '../_model/userParams';
 import { AccountService } from './account.service';
+import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,7 @@ export class MembersService {
     if (hasCache) {
       return of(hasCache);
     }
-    let params = this.getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
+    let params = getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
     params = params.append('minAge', userParams.minAge.toString());
     params = params.append('maxAge', userParams.maxAge.toString());
     params = params.append('gender', userParams.gender.toString());
@@ -65,7 +66,7 @@ export class MembersService {
     //   })
     // );
 
-    return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params)
+    return getPaginatedResult<Member[]>(this.baseUrl + 'users', params, this.http)
       .pipe(map(res => {
         this.memberCache.set(Object.values(userParams).join('-'), res);
         return res;
@@ -74,7 +75,7 @@ export class MembersService {
   }
 
   getMember(username: string) {
-    // const member = this.members.find(x => x.userName === username);
+    // const member = this.members.find(x => x.username === username);
     // if (member !== undefined) return of(member);
     console.log(this.memberCache);
     console.log('===================');
@@ -140,10 +141,10 @@ export class MembersService {
     if (hasCache) {
       return of(hasCache);
     }
-    let params = this.getPaginationHeaders(likeParams.pageNumber, likeParams.pageSize);
+    let params = getPaginationHeaders(likeParams.pageNumber, likeParams.pageSize);
     params = params.append('predicate', likeParams.predicate);
 
-    return this.getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params)
+    return getPaginatedResult<Partial<Member[]>>(this.baseUrl + 'likes', params, this.http)
       .pipe(map(res => {
         this.likedMemberCache.set(Object.values(likeParams).join('-'), res);
         return res;
@@ -152,24 +153,4 @@ export class MembersService {
     //return this.http.get<Partial<Member[]>>(this.baseUrl + 'likes?predicate=' + predicate);
   }
   //#endregion
-
-  private getPaginationHeaders(pageNumber: number, pageSize: number) {
-    let params = new HttpParams();
-    params = params.append('pageNumber', pageNumber.toString());
-    params = params.append('pageSize', pageSize.toString());
-    return params;
-  }
-
-  private getPaginatedResult<T>(url, params) {
-    const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>();
-    return this.http.get<T>(url, { observe: 'response', params }).pipe(
-      map(res => {
-        paginatedResult.result = res.body;
-        if (res.headers.get('Pagination') !== null) {
-          paginatedResult.pagination = JSON.parse(res.headers.get('Pagination'));
-        }
-        return paginatedResult;
-      })
-    );
-  }
 }

@@ -30,6 +30,7 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { DateInputComponent } from './_forms/date-input/date-input.component';
 import { LoginInputComponent } from './_forms/login-input/login-input.component';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 
 ///ใช้สำหรับ เพิ่ม module ต่างๆ จาก library แต่ละที่เข้าสู่การสร้างหน้าเว็บเพจโดยใช้ angular
 @NgModule({
@@ -51,6 +52,7 @@ import { LoginInputComponent } from './_forms/login-input/login-input.component'
     TextInputComponent,
     DateInputComponent,
     LoginInputComponent,
+    MemberMessagesComponent,
   ],
   imports: [
     BrowserModule,

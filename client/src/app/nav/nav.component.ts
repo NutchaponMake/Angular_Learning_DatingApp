@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { User } from '../_model/user';
 import { AccountService } from '../_services/account.service';
+import { MembersService } from '../_services/members.service';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class NavComponent implements OnInit {
   loginForm: FormGroup;
 
   constructor(public accountService: AccountService, private router: Router
-    , private toastr: ToastrService, private formBuilder: FormBuilder) { }
+    , private toastr: ToastrService, private formBuilder: FormBuilder,
+    private membersService: MembersService) { }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -38,11 +40,10 @@ export class NavComponent implements OnInit {
           console.log(response);
           this.router.navigateByUrl('/members');
         },
-        error: (error) => {
-          console.log(error);
-          this.toastr.error(error.error);
-        },
-        complete: () => { console.log('complete login') }
+        complete: () => {
+          this.membersService.memberCache = new Map();
+          console.log('complete login');
+        }
       });
   }
 
