@@ -43,11 +43,14 @@
                 >Messages</a
               >
             </li>
-            <ng-container *ngIf="accountService.currentUser$ | async">
-              <li class="nav-item">
-                <a class="nav-link" (click)="logout()">Logout</a>
-              </li>
-            </ng-container>
+            <li *appHasRole="['Admin', 'Moderator']" class="nav-item">
+              <a
+                class="nav-link"
+                [routerLink]="['/admin']"
+                routerLinkActive="active"
+                >Admin</a
+              >
+            </li>
             <li class="nav-item">
               <a
                 class="nav-link"
@@ -56,6 +59,11 @@
                 >Errors Test</a
               >
             </li>
+            <ng-container *ngIf="accountService.currentUser$ | async">
+              <li class="nav-item">
+                <a class="nav-link" (click)="logout()">Logout</a>
+              </li>
+            </ng-container>
           </ng-container>
         </ul>
       </div>
@@ -75,7 +83,7 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
             dropdownToggle
-            >Welcome {{ user.knownAs | titlecase }}</a
+            >Welcome {{ user.knownAs || user.userName | titlecase }}</a
           >
           <ul class="dropdown-menu mt-3" *dropdownMenu>
             <li>
